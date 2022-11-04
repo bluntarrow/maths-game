@@ -20,11 +20,11 @@ const Toolbar = () => {
 
   useEffect(() => {
     console.log(location);
-    minutesCounter = settings[2].value.minutes;
-    secondsCounter = settings[2].value.seconds;
+    minutesCounter = settings[1].value.minutes;
+    secondsCounter = settings[1].value.seconds;
 
-    setMinutes(settings[2].value.minutes);
-    setSeconds(settings[2].value.seconds);
+    setMinutes(settings[1].value.minutes);
+    setSeconds(settings[1].value.seconds);
 
     const timer = setInterval(() => {
       let num = minutesCounter == 0 ? 0 : -1;
