@@ -96,7 +96,7 @@ const Game = () => {
         gameFunc();
         setStarted(true);
       },
-      !settings[0] ? 0 : 3000
+      !settings[0].value ? 0 : 3000
     );
   }, []);
 

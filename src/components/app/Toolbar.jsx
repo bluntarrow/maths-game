@@ -47,7 +47,7 @@ const Toolbar = () => {
               clearInterval(timer);
             }
           },
-          !settings[0] ? 0 : 3000
+          !settings[0].value ? 0 : 3000
         );
       }
     }, 1000);
