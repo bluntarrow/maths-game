@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { SettingsContext } from "../context/settings";
 
 import { mdiMinus, mdiPlus, mdiDivision, mdiClose } from "@mdi/js";
 import Score from "../components/game/Score";
@@ -8,11 +9,13 @@ import Splash from "../components/game/Splash";
 
 const Game = () => {
   const { game } = useParams();
+  const [settings, setSettings] = useContext(SettingsContext);
 
   const [ans, setAns] = useState("");
   const [inp, setInp] = useState("");
   const [score, setScore] = useState(0);
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(!settings[0].value);
+  console.log(!settings[0].value);
 
   const [num1, setNum1] = useState("-");
   const [num2, setNum2] = useState("-");
@@ -88,16 +91,18 @@ const Game = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      gameFunc();
-      setStarted(true);
-    }, 3000);
+    setTimeout(
+      () => {
+        gameFunc();
+        setStarted(true);
+      },
+      !settings[0] ? 0 : 3000
+    );
   }, []);
 
   return (
     <div className="h-screen w-screen">
       <div className="py-40 max-w-5xl mx-auto w-full h-full grid grid-cols-5 gap-10">
-        {!started && <Splash />}
         <PlayArea
           num1={num1}
           num2={num2}
@@ -108,6 +113,7 @@ const Game = () => {
           ansState={ansState}
         />
         <Score score={score} />
+        <Splash started={started} />
       </div>
 
       <footer className="capitalize text-gray-50 w-full fixed bottom-0 left-0 bg-gray-800 py-2 text-center">
