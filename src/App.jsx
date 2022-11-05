@@ -2,20 +2,26 @@ import { Navigate } from "react-router-dom";
 import { Routes, BrowserRouter, Route } from "react-router-dom";
 import Toolbar from "./components/app/Toolbar";
 import { SettingsContextProvider } from "./context/settings";
+import { TimeContextProvider } from "./context/timer";
 import Game from "./pages/Game";
 import Home from "./pages/Home";
 
 const App = () => {
   return (
     <SettingsContextProvider>
-      <BrowserRouter>
-        <Toolbar />
-        <Routes>
-          <Route path="/" element={<Navigate to={"/games"} replace={true} />} />
-          <Route path="/games" element={<Home />} />
-          <Route path="/games/:game" element={<Game />} />
-        </Routes>
-      </BrowserRouter>
+      <TimeContextProvider>
+        <BrowserRouter>
+          <Toolbar />
+          <Routes>
+            <Route
+              path="/"
+              element={<Navigate to={"/games"} replace={true} />}
+            />
+            <Route path="/games" element={<Home />} />
+            <Route path="/games/:game" element={<Game />} />
+          </Routes>
+        </BrowserRouter>
+      </TimeContextProvider>
     </SettingsContextProvider>
   );
 };

@@ -4,8 +4,8 @@ export const SettingsContext = createContext();
 
 export const SettingsContextProvider = ({ children }) => {
   const [settings, setSettings] = useState([
-    { name: "Start countdown", value: true },
-    { name: "Timer", value: { seconds: 0, minutes: 1 } },
+    { name: "3s Countdown", value: false },
+    { name: "Timer", value: { , minutes: 1seconds: 0 } },
     { name: "High scores", value: true },
   ]);
 

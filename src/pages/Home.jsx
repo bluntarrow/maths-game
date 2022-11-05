@@ -12,6 +12,8 @@ const Home = () => {
   return (
     <div className="h-screen w-screen">
       <div className="grid grid-cols-5 gap-10 h-full max-w-5xl mx-auto py-20">
+
+        {/* games grid */}
         <div className="col-span-3 grid grid-cols-2 grid-rows-2 gap-10">
           {games.map(({ name, icon }) => (
             <Link
@@ -24,6 +26,8 @@ const Home = () => {
             </Link>
           ))}
         </div>
+
+        {/* high scores */}
         <div className="col-span-2 rounded shadow-sm bg-white border">
           <h1 className="py-10 text-xl font-medium text-center text-gray-600">
             High Scores

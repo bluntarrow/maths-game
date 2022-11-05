@@ -1,57 +1,26 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Menu, Transition, Switch } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/20/solid";
 import { SettingsContext } from "../../context/settings";
 import { useLocation } from "react-router-dom";
+import { TimeContext } from "../../context/timer";
 
 const Toolbar = () => {
-  const [settings, setSettings] = useContext(SettingsContext);
-
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-
-  let minutesCounter = 0;
-  let secondsCounter = 0;
-
-  const fmt = (num) => (num < 10 ? "0" + num : num);
-
   const location = useLocation();
 
+  const [settings, setSettings] = useContext(SettingsContext);
+  const [time, Timer] = useContext(TimeContext);
+  console.log(location.pathname);
+  const fmt = (num) => (num < 10 ? "0" + num : num);
+
   useEffect(() => {
-    console.log(location);
-    minutesCounter = settings[1].value.minutes;
-    secondsCounter = settings[1].value.seconds;
-
-    setMinutes(settings[1].value.minutes);
-    setSeconds(settings[1].value.seconds);
-
-    const timer = setInterval(() => {
-      let num = minutesCounter == 0 ? 0 : -1;
-      if (location.pathname === "/games" || location.pathname === "/") {
-        clearInterval(timer);
-      } else {
-        setTimeout(
-          () => {
-            if (minutesCounter > -1 && secondsCounter > num) {
-              if (secondsCounter > 0) {
-                secondsCounter--;
-                setSeconds(secondsCounter);
-              } else {
-                minutesCounter--;
-                setMinutes(minutesCounter);
-                secondsCounter = 59;
-                setSeconds(secondsCounter);
-              }
-            } else {
-              clearInterval(timer);
-            }
-          },
-          !settings[0].value ? 0 : 3000
-        );
-      }
-    }, 1000);
-  }, []);
+    if (location.pathname == "/games") {
+      Timer(true);
+    }else{
+      Timer(false)
+    }
+  }, [location.pathname]);
 
   // settings
   let localSettings = settings;
@@ -61,13 +30,13 @@ const Toolbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-white">
+    <nav className="fixed top-0 px-6 lg:px-0 w-full bg-white">
       <div className="max-w-5xl mx-auto w-full py-4 text-gray-700 font-medium flex justify-between relative">
-        <Link to={"/games"}>Maths</Link>
+        <Link to={"/games"} onClick={Timer(true)}>Maths</Link>
         <div className="flex text-gray-500">
           {location.pathname != "/games" && (
             <div>
-              {fmt(minutes)}:{fmt(seconds)}
+              {fmt(time.minutes)}:{fmt(time.seconds)}
             </div>
           )}
 
@@ -153,7 +122,7 @@ const Toolbar = () => {
                       ))}
                       <Menu.Item
                         as="button"
-                        className=" bg-gray-800 hover:bg-gray-900 rounded text-center w-full py-2 mt-4 text-gray-100"
+                        className=" bg-gray-800 hover:bg-gray-900 rounded text-center w-full py-2 mt-16 text-gray-100"
                       >
                         Close
                       </Menu.Item>

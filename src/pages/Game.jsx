@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SettingsContext } from "../context/settings";
 
-import { mdiMinus, mdiPlus, mdiDivision, mdiClose } from "@mdi/js";
+import { mdiMinus, mdiPlus, mdiDivision, mdiClose, mdiClock } from "@mdi/js";
 import Score from "../components/game/Score";
 import PlayArea from "../components/game/PlayArea";
 import Splash from "../components/game/Splash";
 
 const Game = () => {
   const { game } = useParams();
-  const [settings, setSettings] = useContext(SettingsContext);
+  const [settings] = useContext(SettingsContext);
 
   const [ans, setAns] = useState("");
   const [inp, setInp] = useState("");
@@ -19,7 +19,7 @@ const Game = () => {
 
   const [num1, setNum1] = useState("-");
   const [num2, setNum2] = useState("-");
-  const [symbol, setSymbol] = useState("-");
+  const [symbol, setSymbol] = useState(mdiClock);
 
   const gameFunc = () => {
     let num1 = Math.round(Math.random() * 97) + 3;
@@ -36,19 +36,19 @@ const Game = () => {
         setAns(eval(`${num1}+${num2}`));
         break;
       case "subtraction":
-        setNums();
-        setSymbol(mdiMinus);
-        setAns(eval(`${num1}-${num2}`));
-        break;
-      case "multiplication":
         if (num1 > num2) {
           setNums();
-          setSymbol(mdiClose);
-          setAns(eval(`${num1}*${num2}`));
+          setSymbol(mdiMinus);
+          setAns(eval(`${num1}-${num2}`));
           break;
         } else {
           gameFunc();
         }
+      case "multiplication":
+        setNums();
+        setSymbol(mdiClose);
+        setAns(eval(`${num1}*${num2}`));
+        break;
       case "division":
         if (
           num1 % num2 == 0 &&
