@@ -1,4 +1,4 @@
-import Icon from "@mdi/react";
+import {Icon} from "@mdi/react";
 
 const PlayArea = ({ num1, num2, evaluate, setInp, symbol, inp, ansState }) => {
   return (

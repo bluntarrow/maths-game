@@ -115,7 +115,7 @@ const Game = () => {
 
   return (
     <div className="h-screen w-screen">
-      <div className="py-20 md:py-40 max-w-5xl mx-auto w-full h-full grid grid-cols-5 gap-10 p-4 md:p-0">
+      <div className="py-20 md:py-40 max-w-5xl mx-auto w-full h-full grid grid-cols-5 gap-10 px-4 lg:px-0">
         <Score score={score} className={"md:hidden"} />
         <PlayArea
           num1={num1}
