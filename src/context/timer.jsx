@@ -5,7 +5,10 @@ export const TimeContext = createContext();
 
 export const TimeContextProvider = ({ children }) => {
   const [settings] = useContext(SettingsContext);
-  const settingsTime = settings[1].value;
+  const settingsTime = {
+    minutes: settings[1].value.minutes,
+    seconds: settings[1].value.seconds,
+  };
   const [time, setTime] = useState(settingsTime);
 
   const reduceTime = () => {
@@ -26,25 +29,14 @@ export const TimeContextProvider = ({ children }) => {
     }
   };
 
-  const Timer = (end) => {
-    setTimeout(() => {
-      const timer = setInterval(() => {
-        if (time.minutes == 0 && time.seconds == 0) {
-          clearInterval(timer);
-        } else {
-          reduceTime();
-        }
-      }, 1000);
-      if (end) {
-        clearInterval(timer);
-      }
-    }, 1);
+  const resetTime = () => {
+    setTime({
+      minutes: settings[1].value.minutes,
+      seconds: settings[1].value.seconds,
+    });
   };
 
   return (
-    <TimeContext.Provider
-      value={[time, Timer]}
-      children={children}
-    />
+    <TimeContext.Provider value={[time, reduceTime, resetTime]} children={children} />
   );
 };

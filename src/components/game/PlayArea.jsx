@@ -3,7 +3,7 @@ import Icon from "@mdi/react";
 const PlayArea = ({ num1, num2, evaluate, setInp, symbol, inp, ansState }) => {
   return (
     <div
-      className={`border col-span-3 p-4 rounded shadow-sm flex flex-col justify-center items-center relative transition ease-in-out ${
+      className={`border col-span-5 md:col-span-3 p-4 rounded shadow-sm flex flex-col justify-center items-center relative transition ease-in-out ${
         ansState == "correct" ? "border-green-400" : ""
       } ${ansState == "wrong" ? "border-red-400" : ""}`}
     >

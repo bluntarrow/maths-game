@@ -1,21 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { SettingsContext } from "../context/settings";
 
 import { mdiMinus, mdiPlus, mdiDivision, mdiClose, mdiClock } from "@mdi/js";
 import Score from "../components/game/Score";
 import PlayArea from "../components/game/PlayArea";
 import Splash from "../components/game/Splash";
+import { TimeContext } from "../context/timer";
+import { ScoresContext } from "../context/score";
 
 const Game = () => {
   const { game } = useParams();
+  const navigate = useNavigate();
   const [settings] = useContext(SettingsContext);
+  const [time] = useContext(TimeContext);
+  const [sc, updateScore] = useContext(ScoresContext);
 
   const [ans, setAns] = useState("");
   const [inp, setInp] = useState("");
   const [score, setScore] = useState(0);
   const [started, setStarted] = useState(!settings[0].value);
-  console.log(!settings[0].value);
 
   const [num1, setNum1] = useState("-");
   const [num2, setNum2] = useState("-");
@@ -40,10 +44,10 @@ const Game = () => {
           setNums();
           setSymbol(mdiMinus);
           setAns(eval(`${num1}-${num2}`));
-          break;
         } else {
           gameFunc();
         }
+        break;
       case "multiplication":
         setNums();
         setSymbol(mdiClose);
@@ -60,10 +64,10 @@ const Game = () => {
           setNums();
           setSymbol(mdiDivision);
           setAns(eval(`${num1}/${num2}`));
-          break;
         } else {
           gameFunc();
         }
+        break;
 
       default:
         break;
@@ -100,9 +104,19 @@ const Game = () => {
     );
   }, []);
 
+  useEffect(() => {
+    if (time.minutes == 0 && time.seconds == 1) {
+      setTimeout(() => {
+        updateScore(score, location.pathname);
+        navigate("/games");
+      }, 1000);
+    }
+  }, [time]);
+
   return (
     <div className="h-screen w-screen">
-      <div className="py-40 max-w-5xl mx-auto w-full h-full grid grid-cols-5 gap-10">
+      <div className="py-20 md:py-40 max-w-5xl mx-auto w-full h-full grid grid-cols-5 gap-10 p-4 md:p-0">
+        <Score score={score} className={"md:hidden"} />
         <PlayArea
           num1={num1}
           num2={num2}
@@ -112,7 +126,7 @@ const Game = () => {
           setInp={setInp}
           ansState={ansState}
         />
-        <Score score={score} />
+        <Score score={score} className={"hidden md:flex"} />
         <Splash started={started} />
       </div>
 

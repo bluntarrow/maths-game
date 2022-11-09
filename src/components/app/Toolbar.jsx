@@ -10,16 +10,24 @@ const Toolbar = () => {
   const location = useLocation();
 
   const [settings, setSettings] = useContext(SettingsContext);
-  const [time, Timer] = useContext(TimeContext);
+  const [time, reduceTime, resetTime] = useContext(TimeContext);
   console.log(location.pathname);
   const fmt = (num) => (num < 10 ? "0" + num : num);
 
   useEffect(() => {
-    if (location.pathname == "/games") {
-      Timer(true);
-    }else{
-      Timer(false)
-    }
+    const timer = setInterval(() => {
+      if (time.minutes == 0 && time.seconds == 0) {
+        clearInterval(timer);
+      } else {
+        reduceTime();
+      }
+      if (location.pathname == "/games") {
+        clearInterval(timer);
+        resetTime();
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, [location.pathname]);
 
   // settings
@@ -30,9 +38,9 @@ const Toolbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 px-6 lg:px-0 w-full bg-white">
+    <nav className="fixed top-0 px-6 lg:px-0 w-full bg-white z-50">
       <div className="max-w-5xl mx-auto w-full py-4 text-gray-700 font-medium flex justify-between relative">
-        <Link to={"/games"} onClick={Timer(true)}>Maths</Link>
+        <Link to={"/games"}>Maths</Link>
         <div className="flex text-gray-500">
           {location.pathname != "/games" && (
             <div>
@@ -62,7 +70,7 @@ const Toolbar = () => {
                   >
                     <Menu.Items
                       as="ul"
-                      className="h-80 w-64 -bottom-80 bg-gray-100 rounded shadow -right-10 absolute p-4"
+                      className="h-56 w-64 -bottom-56 bg-gray-100 rounded shadow right-0 md:-right-10 absolute p-4"
                       static
                     >
                       {settings.map((setting) => (
@@ -122,7 +130,7 @@ const Toolbar = () => {
                       ))}
                       <Menu.Item
                         as="button"
-                        className=" bg-gray-800 hover:bg-gray-900 rounded text-center w-full py-2 mt-16 text-gray-100"
+                        className=" bg-gray-800 hover:bg-gray-900 rounded text-center w-full py-2 mt-8 text-gray-100"
                       >
                         Close
                       </Menu.Item>
